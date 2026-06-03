@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome to CURATED | Editorial Spaces & Horology{% endblock %}
+
+{% block header_action %}
+<!-- Interactive Header Action to shuffle the lookbook dynamically -->
+<button onclick="shuffleLookbook()" class="hidden sm:flex px-5 py-2.5 rounded-full border border-luxury-800 hover:border-luxury-gold hover:text-luxury-gold transition-all duration-300 text-xs uppercase tracking-widest font-semibold items-center gap-2">
+    <i class="fa-solid fa-rotate"></i> Shuffle lookbook
+</button>
+{% endblock %}
+
+{% block content %}
+<!-- WELCOMING WORDS (Hero Section) -->
+<section class="max-w-7xl mx-auto px-6 pt-16 pb-20 md:pt-28 md:pb-24 flex flex-col items-center text-center">
+    <span class="text-xs uppercase tracking-[0.3em] text-luxury-gold font-semibold mb-6 animate-pulse">
+        A Modern Study in Proportion & Precision
+    </span>
+
+    <h1 class="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-normal leading-[1.1] tracking-tight max-w-5xl text-luxury-900 mb-8">
+        Where Space Finds <span class="italic font-light">Structure</span>, and Time Finds <span class="italic font-light">Elegance</span>.
+    </h1>
+
+    <p class="text-base sm:text-lg md:text-xl text-luxury-800/80 font-light max-w-3xl leading-relaxed mb-12">
+        Welcome to Curated. We present a thoughtful, highly-edited selection of extraordinary interior architecture elements and meticulously designed chronographs. We believe that physical structures and passing moments are not just to be occupied, but beautifully experienced.
+    </p>
+
+    <div class="w-16 h-[1px] bg-luxury-gold/50 mb-16"></div>
+
+    <!-- Minimal Call To Actions -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto">
+        <a href="{% url 'furniture' %}" class="group flex items-center justify-center gap-3 px-8 py-4 bg-white hover:bg-luxury-900 hover:text-white rounded-2xl shadow-sm border border-luxury-200/60 transition-all duration-300">
+            <span class="font-medium text-sm text-luxury-900 group-hover:text-white">Explore Furniture</span>
+            <i class="fa-solid fa-arrow-right-long text-luxury-gold group-hover:translate-x-1 transition-transform"></i>
+        </a>
+        <a href="{% url 'watches' %}" class="group flex items-center justify-center gap-3 px-8 py-4 bg-white hover:bg-luxury-900 hover:text-white rounded-2xl shadow-sm border border-luxury-200/60 transition-all duration-300">
+            <span class="font-medium text-sm text-luxury-900 group-hover:text-white">Explore Chronometers</span>
+            <i class="fa-solid fa-arrow-right-long text-luxury-gold group-hover:translate-x-1 transition-transform"></i>
+        </a>
+    </div>
+</section>
+
+<!-- CURATED VISUAL ESSAY (Randomized Grid Section - No list views) -->
+<section class="bg-white py-20 border-t border-luxury-200/30">
+    <div class="max-w-7xl mx-auto px-6">
+        
+        <!-- Grid Header -->
+        <div class="flex flex-col md:flex-row justify-between items-baseline mb-16 gap-6">
+            <div class="flex items-center gap-4">
+                <span class="font-serif text-5xl md:text-6xl text-luxury-200/70 select-none">✦</span>
+                <div>
+                    <h2 class="font-serif text-2xl md:text-3xl text-luxury-900">Randomized Curation</h2>
+                    <p class="text-xs text-luxury-gold font-bold uppercase tracking-widest mt-1">Refined Spatial Instincts</p>
+                </div>
+            </div>
+            <p class="max-w-md text-sm text-luxury-800/70 font-light leading-relaxed">
+                A fluctuating composition of modern, structural home elements and timeless mechanical engineering. Tap shuffle or refresh to recalibrate the visual story.
+            </p>
+        </div>
+
+        <!-- Layout Grid (Flexible Cards, No lists) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 opacity-0 transition-opacity duration-500 ease-in-out" id="lookbookGrid">
+            <!-- Dynamic Cards inject here via template scripts -->
+        </div>
+
+    </div>
+</section>
+
+<!-- CALL TO ACTION (To break lookbook monotony elegantly) -->
+<section class="max-w-5xl mx-auto py-24 px-6 text-center">
+    <div class="bg-luxury-900 text-luxury-50 rounded-3xl p-10 md:p-16 shadow-2xl relative overflow-hidden flex flex-col items-center">
+        <!-- Accent Glow -->
+        <div class="absolute -right-20 -top-20 w-80 h-80 bg-luxury-gold/10 rounded-full blur-3xl"></div>
+        
+        <span class="text-xs uppercase tracking-[0.2em] text-luxury-gold font-semibold mb-4">
+            Curate Your Perspective
+        </span>
+        <h3 class="font-serif text-3xl md:text-4xl mb-6 text-white max-w-lg leading-tight">
+            Design is the elegant negotiation with space and time.
+        </h3>
+        <p class="text-luxury-200/70 font-light text-sm md:text-base max-w-xl mb-10 leading-relaxed">
+            Allow your creative intuition to take the lead. Shuffle our looking glass to uncover unexpected textures, shadows, and contours.
+        </p>
+        
+        <button onclick="shuffleLookbook()" class="inline-flex items-center gap-3 px-8 py-4 bg-luxury-gold hover:bg-white text-luxury-900 transition-all duration-300 rounded-2xl font-semibold text-sm tracking-wide shadow-md">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Shuffle Lookbook Display
+        </button>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Pool of elegant architecture and chronometer assets
+    const pool = [
+        {
+            url: "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=800&q=80",
+            category: "Furniture Series",
+            title: "Monolithic Accent Chair"
+        },
+        {
+            url: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80",
+            category: "Furniture Series",
+            title: "Ochre Lounge Ensemble"
+        },
+        {
+            url: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80",
+            category: "Furniture Series",
+            title: "Contemporary Emerald Lounge"
+        },
+        {
+            url: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80",
+            category: "Furniture Series",
+            title: "Zen Minimalist Credenza"
+        },
+        {
+            url: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80",
+            category: "Horology Collection",
+            title: "Nordic Minimalist Chrono"
+        },
+        {
+            url: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&w=800&q=80",
+            category: "Horology Collection",
+            title: "Classic Mahogany Calibre"
+        },
+        {
+            url: "https://images.unsplash.com/photo-1509048191080-d2984bad6ae5?auto=format&fit=crop&w=800&q=80",
+            category: "Horology Collection",
+            title: "Obsidian Titanium Case"
+        },
+        {
+            url: "https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&w=800&q=80",
+            category: "Horology Collection",
+            title: "Cognac Heritage Series"
+        },
+        {
+            url: "https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&w=800&q=80",
+            category: "Furniture Series",
+            title: "Architectural Bauhaus Armchair"
+        }
+    ];
+
+    function shuffleArray(array) {
+        let current = array.length, random;
+        while (current !== 0) {
+            random = Math.floor(Math.random() * current);
+            current--;
+            [array[current], array[random]] = [array[random], array[current]];
+        }
+        return array;
+    }
+
+    function createLookbookCard(item) {
+        return `
+            <div class="group relative overflow-hidden rounded-2xl bg-luxury-50 border border-luxury-200/40 hover:shadow-xl transition-all duration-500 flex flex-col">
+                <div class="overflow-hidden relative h-[380px] w-full bg-luxury-100">
+                    <img 
+                        src="${item.url}" 
+                        alt="${item.title}" 
+                        class="object-cover w-full h-full transform scale-100 group-hover:scale-105 transition-transform duration-700 ease-out"
+                        loading="lazy"
+                    />
+                    <div class="absolute inset-0 bg-gradient-to-t from-luxury-900/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                </div>
+                <div class="p-6 bg-white flex flex-col flex-grow border-t border-luxury-100/50">
+                    <span class="text-[10px] uppercase tracking-widest text-luxury-gold font-bold mb-1">${item.category}</span>
+                    <h3 class="font-serif text-lg text-luxury-900 font-medium group-hover:text-luxury-gold transition-colors duration-300">${item.title}</h3>
+                </div>
+            </div>
+        `;
+    }
+
+    function shuffleLookbook() {
+        const grid = document.getElementById("lookbookGrid");
+        grid.style.opacity = '0';
+        
+        setTimeout(() => {
+            const shuffledItems = shuffleArray([...pool]).slice(0, 3);
+            grid.innerHTML = shuffledItems.map(item => createLookbookCard(item)).join('');
+            grid.style.opacity = '1';
+        }, 300);
+    }
+
+    // Load initial random imagery on page mount
+    document.addEventListener("DOMContentLoaded", () => {
+        shuffleLookbook();
+    });
+</script>
+{% endblock %}

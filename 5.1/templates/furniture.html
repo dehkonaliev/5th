@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}CURATED | The Furniture Series{% endblock %}
+
+{% block header_action %}
+<!-- Subtle indicator showing context size elegantly -->
+<span class="hidden sm:inline-flex px-4 py-2 bg-luxury-100 rounded-full text-luxury-800 text-xs font-semibold tracking-wider uppercase">
+    Archived Series / {{ objects|length }} Items
+</span>
+{% endblock %}
+
+{% block content %}
+<!-- HEADER / CONTEXT SECTION -->
+<section class="max-w-7xl mx-auto px-6 pt-16 pb-12">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-luxury-200/50 pb-8 gap-6">
+        <div>
+            <span class="text-xs uppercase tracking-[0.3em] text-luxury-gold font-bold">Series 01</span>
+            <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-luxury-900 mt-2">The Furniture Collection</h1>
+        </div>
+        <p class="max-w-md text-sm text-luxury-800/70 font-light leading-relaxed">
+            A meticulous exploration of sculptural comfort, brutalist influences, and refined geometries. Each element represents an intentional dialogue with modern interior architecture.
+        </p>
+    </div>
+</section>
+
+<!-- DYNAMIC OBJECTS GRID (Absolutely no lists utilized) -->
+<section class="max-w-7xl mx-auto px-6 pb-24">
+    {% if objects %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        
+        {% for obj in objects %}
+        <!-- Grid Card Item -->
+        <a href="{% url 'detail' obj.pk %}" class="group relative bg-white border border-luxury-200/40 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col">
+            
+            <!-- Image Frame -->
+            <div class="overflow-hidden relative h-[400px] w-full bg-luxury-100">
+                {% if obj.image %}
+                    <img 
+                        src="{{ obj.image.url }}" 
+                        alt="{{ obj.name }}" 
+                        class="object-cover w-full h-full transform scale-100 group-hover:scale-105 transition-transform duration-700 ease-out"
+                        loading="lazy"
+                    />
+                {% else %}
+                    <!-- Graceful Fallback Frame matching user's "No photo" requirement -->
+                    <div class="w-full h-full flex flex-col items-center justify-center bg-luxury-100/50 text-luxury-800/40 p-6">
+                        <i class="fa-solid fa-image text-3xl mb-2"></i>
+                        <span class="text-xs tracking-widest uppercase">No Photo Available</span>
+                    </div>
+                {% endif %}
+                
+                <!-- Gentle shadow overlay on hover -->
+                <div class="absolute inset-0 bg-gradient-to-t from-luxury-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                <!-- Elegant Floating Price Tag -->
+                <div class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm border border-luxury-200/40 px-4 py-2 rounded-xl shadow-sm">
+                    <span class="font-sans text-xs font-semibold text-luxury-900 tracking-wider">
+                        ${{ obj.price }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="p-8 flex flex-col flex-grow bg-white">
+                <!-- Category Info -->
+                <span class="text-[10px] uppercase tracking-[0.2em] text-luxury-gold font-bold mb-2">
+                    {{ obj.category }}
+                </span>
+
+                <!-- Object Name -->
+                <h2 class="font-serif text-xl text-luxury-900 group-hover:text-luxury-gold transition-colors duration-300 mb-3">
+                    {{ obj.name }}
+                </h2>
+
+                <!-- Info/Description -->
+                <p class="text-xs text-luxury-800/70 font-light leading-relaxed">
+                    {{ obj.info }}
+                </p>
+
+                <!-- Action Anchor Link -->
+                <div class="mt-8 pt-4 border-t border-luxury-100/50 flex items-center justify-between text-xs text-luxury-900 font-bold tracking-widest uppercase">
+                    <span>View Specifications</span>
+                    <i class="fa-solid fa-arrow-right-long text-luxury-gold group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+
+    </div>
+    {% else %}
+    <!-- Elegant Empty State -->
+    <div class="text-center py-20 bg-white border border-luxury-200/30 rounded-3xl p-10 max-w-xl mx-auto">
+        <span class="text-3xl text-luxury-200">✦</span>
+        <h3 class="font-serif text-xl text-luxury-900 mt-4 mb-2">No elements currently archived</h3>
+        <p class="text-xs text-luxury-800/60 font-light max-w-sm mx-auto">
+            Our curators are currently sourcing exceptional pieces. Please visit us again soon or review other collections.
+        </p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block title %}CURATED | The Furniture Series{% endblock %}
+
+{% block header_action %}
+<!-- Subtle indicator showing context size elegantly -->
+<span class="hidden sm:inline-flex px-4 py-2 bg-luxury-100 rounded-full text-luxury-800 text-xs font-semibold tracking-wider uppercase">
+    Archived Series / {{ objects|length }} Items
+</span>
+{% endblock %}
+
+{% block content %}
+<!-- MAIN INTERACTIVE ARCHIVE DETAIL DISPLAY -->
+    <main class="relative z-10 flex-grow">
+        <div class="max-w-7xl mx-auto px-6 py-12 md:py-16">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+                
+                <!-- COLUMN 1: ARCHIVAL IMAGE FRAME (lg:col-span-7) -->
+                <div class="lg:col-span-7 space-y-6">
+                    <!-- Elegant Breadcrumbs -->
+                    <div class="flex items-center gap-2 text-[10px] tracking-widest uppercase text-luxury-800/60">
+                        <span class="text-luxury-800/40">Curated Archive</span>
+                        <span class="text-luxury-200">/</span>
+                        <span id="breadcrumbCategory" class="text-luxury-gold font-semibold">{{object.category}}</span>
+                        <span class="text-luxury-200">/</span>
+                        <span id="breadcrumbName" class="truncate max-w-[150px] text-luxury-900 font-medium">{{object.name}}</span>
+                    </div>
+
+                    <!-- Focus Image Viewport -->
+                    <div class="bg-luxury-100 border border-luxury-200/40 rounded-3xl overflow-hidden shadow-sm relative group">
+                        <img 
+                            id="objectImage"
+                            src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=1200&q=80" 
+                            alt="Archival Specimen" 
+                            class="w-full h-auto object-cover max-h-[700px] transform scale-100 group-hover:scale-[1.01] transition-transform duration-1000 ease-out"
+                            loading="eager"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-luxury-900/10 to-transparent pointer-events-none"></div>
+                    </div>
+
+                    <!-- Design Narrative Accordion Card (No lists) -->
+                    <div class="bg-white border border-luxury-200/30 rounded-2xl p-6 md:p-8">
+                        <span class="text-[10px] tracking-[0.2em] text-luxury-gold uppercase font-bold block mb-3">The Architectural Narrative</span>
+                        <p id="narrativeParagraph" class="text-xs sm:text-sm text-luxury-800/80 font-light leading-relaxed">
+                            This archival structure is celebrated for its singular aesthetic integrity. Carefully cataloged within the Curated Index, its material choices, proportions, and visual weight have been rigorously analyzed to ensure a timeless presence in any spatial composition.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- COLUMN 2: ARCHIVAL SPECIFICATIONS PANEL (lg:col-span-5) -->
+                <div class="lg:col-span-5 lg:sticky lg:top-28 space-y-8">
+                    
+                    <!-- Metadata Headers -->
+                    <div class="border-b border-luxury-200/50 pb-8 space-y-4">
+                        <span id="objectCategory" class="inline-block text-xs uppercase tracking-[0.3em] text-luxury-gold font-bold bg-luxury-100/60 px-3 py-1 rounded-md">
+                            Interior Architecture
+                        </span>
+
+                        <h1 id="objectName" class="font-serif text-3xl sm:text-4xl lg:text-5xl text-luxury-900 tracking-tight leading-tight">
+                            {{object.name}}
+                        </h1>
+
+                        <!-- Price Architecture Badge -->
+                        <div class="pt-2 flex items-baseline gap-2">
+                            <span class="text-xs uppercase tracking-widest text-luxury-800/50 font-semibold">Archived Value:</span>
+                            <span id="objectPrice" class="font-sans text-2xl font-semibold text-luxury-900 tracking-wider">
+                                ${{object.price}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Description Block -->
+                    <div class="space-y-4">
+                        <span class="text-[10px] tracking-[0.2em] text-luxury-gold uppercase font-bold block">Archivist Notes</span>
+                        <p id="objectInfo" class="text-sm text-luxury-800/70 font-light leading-relaxed">
+                            {{object.info}}
+                        </p>
+                    </div>
+
+                    <!-- High-Precision Highlights Grid (Replaces Standard List Bullets) -->
+                    <div class="grid grid-cols-2 gap-4 pt-4 border-t border-luxury-100/50">
+                        <div class="p-4 bg-white border border-luxury-200/20 rounded-xl">
+                            <span class="text-[9px] uppercase tracking-widest text-luxury-gold font-bold block mb-1">Authenticity</span>
+                            <span id="specAuthenticity" class="text-xs text-luxury-900 font-medium">Certified Original Piece</span>
+                        </div>
+                        <div class="p-4 bg-white border border-luxury-200/20 rounded-xl">
+                            <span class="text-[9px] uppercase tracking-widest text-luxury-gold font-bold block mb-1">Archived State</span>
+                            <span id="specState" class="text-xs text-luxury-900 font-medium">Mint Condition</span>
+                        </div>
+                        <div class="p-4 bg-white border border-luxury-200/20 rounded-xl col-span-2">
+                            <span class="text-[9px] uppercase tracking-widest text-luxury-gold font-bold block mb-1">Archived Specifications</span>
+                            <span id="specDimensions" class="text-xs text-luxury-900 font-medium">
+                                Dimensions: $82\,\text{cm} \times 88\,\text{cm} \times 76\,\text{cm}$
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Call-To-Action Operations -->
+                    <div class="space-y-4 pt-4">
+                        <button onclick="toggleInquiryModal()" class="w-full flex items-center justify-center gap-3 px-8 py-4 bg-luxury-900 hover:bg-luxury-gold text-white hover:text-luxury-900 rounded-2xl shadow-md transition-all duration-300 font-medium text-sm tracking-widest uppercase">
+                            <i class="fa-regular fa-envelope"></i> Request Archive Dossier
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- INQUIRY SLIDE-OUT / MODAL CONTEXT OVERLAY -->
+    <div id="inquiryModal" class="hidden fixed inset-0 z-50 overflow-hidden" role="dialog" aria-modal="true">
+        <!-- Semi-transparent backdrop -->
+        <div class="absolute inset-0 bg-luxury-900/40 backdrop-blur-sm transition-opacity" onclick="toggleInquiryModal()"></div>
+
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-luxury-50 border-l border-luxury-200/60 p-8 flex flex-col justify-between shadow-2xl relative">
+                
+                <!-- Close Button -->
+                <button onclick="toggleInquiryModal()" class="absolute top-6 right-6 text-luxury-900 hover:text-luxury-gold transition-colors" aria-label="Close modal">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+
+                <div class="space-y-6 pt-6">
+                    <div>
+                        <span class="text-[10px] tracking-[0.2em] text-luxury-gold uppercase font-bold block mb-1">Acquisition Portal</span>
+                        <h3 class="font-serif text-2xl text-luxury-900">Request Dossier for <span id="modalObjectName">{{object.name}}</span></h3>
+                        <p class="text-xs text-luxury-800/60 font-light mt-1">Our private concierge will compile historical provenance, physical coordinates, and customized white-glove transport logistics for this archival item.</p>
+                    </div>
+
+                    <!-- Inquiry Input Controls (No lists used) -->
+                    <div class="space-y-4">
+                        <div class="space-y-1">
+                            <label class="text-[9px] uppercase tracking-wider text-luxury-800/50 font-semibold" for="client_name">Your Name</label>
+                            <input id="client_name" type="text" placeholder="e.g. Eleanor Vance" class="w-full px-4 py-3 bg-white border border-luxury-200/80 rounded-xl text-xs placeholder-luxury-800/40 focus:outline-none focus:border-luxury-gold transition-colors" />
+                        </div>
+                        
+                        <div class="space-y-1">
+                            <label class="text-[9px] uppercase tracking-wider text-luxury-800/50 font-semibold" for="client_email">Preferred Communication Address</label>
+                            <input id="client_email" type="email" placeholder="e.g. client@domain.com" class="w-full px-4 py-3 bg-white border border-luxury-200/80 rounded-xl text-xs placeholder-luxury-800/40 focus:outline-none focus:border-luxury-gold transition-colors" />
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-[9px] uppercase tracking-wider text-luxury-800/50 font-semibold" for="client_inquiry">Specific areas of inquiry</label>
+                            <textarea id="client_inquiry" placeholder="Inquire about provenance records, shipping schedules, custom specifications..." rows="4" class="w-full px-4 py-3 bg-white border border-luxury-200/80 rounded-xl text-xs placeholder-luxury-800/40 focus:outline-none focus:border-luxury-gold transition-colors resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <button onclick="submitInquiry()" class="w-full py-4 bg-luxury-900 text-white font-semibold text-xs tracking-widest uppercase hover:bg-luxury-gold hover:text-luxury-900 rounded-xl transition-all duration-300 shadow-md">
+                        Transmit Archival Request
+                    </button>
+                </div>
+
+                <!-- Footer indicator in modal -->
+                <div class="text-[9px] tracking-widest text-luxury-800/40 uppercase text-center mt-8">
+                    Secured Concierge Link ✦ Curated Index
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

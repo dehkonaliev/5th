@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import HomeView
+from .views import FurnitureView, DetailView
 
 urlpatterns = [
-    path('', HomeView.as_view(), name='home')
+    path('', FurnitureView.as_view(), name='furniture'),
+    path('detail/<int:pk>', DetailView.as_view(), name='detail')
 ]

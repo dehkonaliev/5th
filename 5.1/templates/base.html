@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CURATED | Luxury Living & Chronometers{% endblock %}</title>
+    
+    <!-- Tailwind CSS CDN (Optional: can be replaced with Django static compiled CSS) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Editorial Serif and Clean Sans-Serif -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Modern Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        luxury: {
+                            50: '#FDFBF7',
+                            100: '#F4EFE6',
+                            200: '#E8DFCC',
+                            800: '#2C2A27',
+                            900: '#1C1A18',
+                            gold: '#C5A880',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Modern scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FDFBF7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E8DFCC;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #C5A880;
+        }
+    </style>
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-luxury-50 text-luxury-900 font-sans selection:bg-luxury-gold selection:text-white overflow-x-hidden flex flex-col min-h-screen">
+
+    <!-- NAVIGATION BAR (Three items only, absolutely no lists) -->
+    <header class="sticky top-0 z-50 bg-luxury-50/90 backdrop-blur-md border-b border-luxury-200/50 transition-all duration-300">
+        <nav class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            
+            <!-- Brand Logo -->
+            <a href="{% url 'home' %}" class="flex items-center gap-3 group focus:outline-none">
+                <span class="font-serif text-2xl font-bold tracking-widest text-luxury-900 group-hover:text-luxury-gold transition-colors duration-300">
+                    C U R A T E D
+                </span>
+            </a>
+
+            <!-- Navigation Links (Structured with flexible elements - NO list tags) -->
+            <div class="hidden md:flex items-center gap-12">
+                <a href="{% url 'home' %}" class="font-medium tracking-wide text-sm hover:text-luxury-gold transition-colors duration-300 py-2 relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-luxury-gold after:transition-all after:duration-300 {% if request.resolver_match.url_name == 'home' %}text-luxury-gold after:w-full{% endif %}">
+                    Home
+                </a>
+                <a href="{% url 'furniture' %}" class="font-medium tracking-wide text-sm hover:text-luxury-gold transition-colors duration-300 py-2 relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-luxury-gold after:transition-all after:duration-300 {% if request.resolver_match.url_name == 'furniture' %}text-luxury-gold after:w-full{% endif %}">
+                    Furniture
+                </a>
+                <a href="{% url 'watches' %}" class="font-medium tracking-wide text-sm hover:text-luxury-gold transition-colors duration-300 py-2 relative after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-luxury-gold after:transition-all after:duration-300 {% if request.resolver_match.url_name == 'watches' %}text-luxury-gold after:w-full{% endif %}">
+                    Watches
+                </a>
+            </div>
+
+            <!-- Optional Header Actions / Interactive Utility Trigger -->
+            <div class="hidden sm:flex items-center">
+                {% block header_action %}
+                <!-- Can be customized or left blank by child templates -->
+                {% endblock %}
+            </div>
+
+            <!-- Mobile Navigation Trigger (No list structures used) -->
+            <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-luxury-900 focus:outline-none" aria-label="Toggle Navigation">
+                <i id="menuIcon" class="fa-solid fa-bars-staggered text-xl"></i>
+            </button>
+        </nav>
+
+        <!-- Mobile Full Screen Overlay Navigation Menu -->
+        <div id="mobileMenu" class="hidden fixed inset-x-0 top-20 bg-luxury-50/98 border-b border-luxury-200 h-screen transition-all duration-300 flex flex-col p-8 gap-8 shadow-xl">
+            <a href="{% url 'home' %}" onclick="toggleMobileMenu()" class="font-serif text-3xl font-medium tracking-wide hover:text-luxury-gold transition-colors duration-200">
+                Home
+            </a>
+            <a href="{% url 'furniture' %}" onclick="toggleMobileMenu()" class="font-serif text-3xl font-medium tracking-wide hover:text-luxury-gold transition-colors duration-200">
+                Furniture
+            </a>
+            <a href="{% url 'watches' %}" onclick="toggleMobileMenu()" class="font-serif text-3xl font-medium tracking-wide hover:text-luxury-gold transition-colors duration-200">
+                Watches
+            </a>
+            {% block mobile_header_action %}{% endblock %}
+        </div>
+    </header>
+
+    <!-- MAIN INTERACTIVE CONTENT AREA -->
+    <main class="relative z-10 flex-grow">
+        {% block content %}
+        <!-- Dynamic Page Templates Inherit and Override This Space -->
+        {% endblock %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-luxury-900 text-luxury-100 border-t border-luxury-800">
+        <div class="max-w-7xl mx-auto px-6 py-16 flex flex-col md:flex-row justify-between items-center gap-8">
+            
+            <div class="flex flex-col items-center md:items-start gap-3">
+                <span class="font-serif text-xl font-bold tracking-widest text-white">C U R A T E D</span>
+                <p class="text-xs text-luxury-200/60 font-light max-w-xs text-center md:text-left">
+                    Professional Django editorial layout celebrating minimalist interior architecture and luxury watches.
+                </p>
+            </div>
+
+            <div class="text-center text-xs text-luxury-200/50 font-light flex flex-col gap-1">
+                <span>&copy; {% now "Y" %} CURATED. Crafted for refined systems.</span>
+                <span>All photography curated from beautiful, public-domain resources.</span>
+            </div>
+
+            <div class="flex gap-4">
+                <a href="#" class="w-10 h-10 rounded-full border border-luxury-800 flex items-center justify-center text-luxury-200/70 hover:bg-luxury-gold hover:text-luxury-900 hover:border-luxury-gold transition-all duration-300" aria-label="Back to Top">
+                    <i class="fa-solid fa-arrow-up"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SHARED SCRIPTS -->
+    <script>
+        // Action: Mobile Menu Overlay Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById("mobileMenu");
+            const icon = document.getElementById("menuIcon");
+            
+            if(menu.classList.contains("hidden")) {
+                menu.classList.remove("hidden");
+                icon.className = "fa-solid fa-xmark text-xl";
+            } else {
+                menu.classList.add("hidden");
+                icon.className = "fa-solid fa-bars-staggered text-xl";
+            }
+        }
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

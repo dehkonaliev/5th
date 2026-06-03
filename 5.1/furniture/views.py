@@ -12,3 +12,7 @@ class DetailView(View):
     def get(self, request, pk):
         object = Furniture.objects.filter(id=pk).first()
         return render(request, 'furniture_detail.html', {'object':object})
+    
+class UpdateView(View):
+    def get(self, request):
+        pass

@@ -6,7 +6,7 @@ from .forms import FurnitureForm
 
 class FurnitureView(View):
     def get(self, request):
-        objects = Furniture.objects.all()
+        objects = Furniture.objects.all().order_by('-id')
         return render(request, 'furniture.html', {'objects':objects})
     
 class DetailView(View):
@@ -28,4 +28,15 @@ class UpdateView(View):
             form.save()
             return redirect('furniture_detail', pk=object.pk)
         return render(request, 'furniture_update.html', {'form':form, 'object':object})
+    
+class CreateView(View):
+    def get(self, request):
+        form = FurnitureForm()
+        return render(request, 'furniture_create.html', {'form':form})
+    
+    def post(self, request):
+        form = FurnitureForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+        return redirect('furniture')
         

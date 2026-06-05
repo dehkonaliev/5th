@@ -30,7 +30,7 @@
                     <div class="bg-luxury-100 border border-luxury-200/40 rounded-3xl overflow-hidden shadow-sm relative group">
                         <img 
                             id="objectImage"
-                            src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=1200&q=80" 
+                            src="{{object.image.url}}" 
                             alt="Archival Specimen" 
                             class="w-full h-auto object-cover max-h-[700px] transform scale-100 group-hover:scale-[1.01] transition-transform duration-1000 ease-out"
                             loading="eager"
@@ -97,9 +97,9 @@
 
                     <!-- Interactive Call-To-Action Operations -->
                     <div class="space-y-4 pt-4">
-                        <button onclick="toggleInquiryModal()" class="w-full flex items-center justify-center gap-3 px-8 py-4 bg-luxury-900 hover:bg-luxury-gold text-white hover:text-luxury-900 rounded-2xl shadow-md transition-all duration-300 font-medium text-sm tracking-widest uppercase">
-                            <i class="fa-regular fa-envelope"></i> Request Archive Dossier
-                        </button>
+                        <a href="{% url 'furniture_update' object.pk %}" class="w-full flex items-center justify-center gap-3 px-8 py-4 bg-luxury-900 hover:bg-luxury-gold text-white hover:text-luxury-900 rounded-2xl shadow-md transition-all duration-300 font-medium text-sm tracking-widest uppercase">
+                            <i class="fa-regular fa-edit"></i> Update
+                        </a>
                     </div>
 
                 </div>

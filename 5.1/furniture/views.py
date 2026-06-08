@@ -1,12 +1,23 @@
 from django.shortcuts import render, redirect
 from django.views import View
+from django.core.paginator import Paginator
 from .models import Furniture
 from .forms import FurnitureForm
 
 
 class FurnitureView(View):
     def get(self, request):
+        q = request.POST.get('q')
         objects = Furniture.objects.all().order_by('-id')
+        pagination = Paginator(objects, 3)
+        page_number = request.POST.get('page')
+        currents = pagination.get_page(page_number)
+        
+        context = {
+            'objects': currents,
+            'q':q
+        }
+        
         return render(request, 'furniture.html', {'objects':objects})
     
 class DetailView(View):

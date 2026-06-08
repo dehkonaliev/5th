@@ -13,3 +13,7 @@ class SignUpView(View):
         if form.is_valid():
             form.save()
         return redirect('home')
+    
+class HomeView(View):
+    def get(self, request):
+        return render(request, 'index.html')

@@ -1,2 +1,10 @@
 <h1>Home</h1>
 <a href="{% url 'sign-up' %}">Sign Up</a>
+{% if request.user.is_authenticated %}
+    <h1>{{request.user.username}}</h1>
+    <h2>{{request.user.password}}</h2>
+    <a href="{% url 'sign-out' %}">Sign out</a>
+{% else %}
+    <a href="{% url 'sign-in' %}">Sign In</a>
+    <a href="{% url 'sign-up' %}">Sign Up</a>
+{% endif %}

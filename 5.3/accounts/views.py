@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from .models import CustomUser
-from .forms import UserForm
+from .forms import UserForm, LoginForm
+from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import ValidationError
 
 class SignUpView(View):
     def get(self, request):
@@ -17,3 +19,19 @@ class SignUpView(View):
 class HomeView(View):
     def get(self, request):
         return render(request, 'index.html')
+    
+class LoginView(View):
+    def get(self, request):
+        form = LoginForm()
+        return render(request, 'sign-in.html', {'form':form})
+    
+    def post(self, request):
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if not user:
+                raise ValueError('The password or username is incorrect!')
+            login(request, user)
+            return redirect('home')

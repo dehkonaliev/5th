@@ -19,5 +19,9 @@ class UserForm(forms.ModelForm):
         if password != confirm_password:
             raise ValidationError('The passwords are not identical')
         return cleaned_data
+    
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=30)
+    password = forms.CharField(widget=forms.PasswordInput)
         
         

@@ -4,6 +4,8 @@ from .models import CustomUser
 from .forms import UserForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ValidationError
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 class SignUpView(View):
     def get(self, request):
@@ -35,3 +37,10 @@ class LoginView(View):
                 raise ValueError('The password or username is incorrect!')
             login(request, user)
             return redirect('home')
+        
+class LogoutView(View):
+    def get(self, request):
+        return render(request, 'sign-out.html')
+    def post(self, request):
+        logout(request)
+        return redirect('home')

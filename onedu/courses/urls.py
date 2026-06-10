@@ -1,6 +1,8 @@
 from django.urls import path
-from .views import ListView
+from .views import list, create, update
 
 urlpatterns = [
-    path('explore', ListView.as_view(), name='explore')
+    path('explore', list, name='explore'),
+    path('create', create, name='create'),
+    path('update/<int:pk>', update, name='update')
 ]

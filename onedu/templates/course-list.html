@@ -1,0 +1,8 @@
+<a href="{% url 'create' %}">Create</a>
+<a href="{% url 'explore' %}">Explore</a>
+{% for course in courses %}
+    <hr>
+    <h1>{{course.title}}</h1>
+    <h2>{{course.duration}}</h2>
+    <h2>{{course.subject}}</h2>
+{% endfor %}

@@ -4,6 +4,7 @@
     <h1>{{request.user.username}}</h1>
     <h2>{{request.user.password}}</h2>
     <a href="{% url 'sign-out' %}">Sign out</a>
+    <a href="{% url 'change-pass' %}">Change Password</a>
 {% else %}
     <a href="{% url 'sign-in' %}">Sign In</a>
     <a href="{% url 'sign-up' %}">Sign Up</a>

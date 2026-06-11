@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from .models import CustomUser
-from .forms import UserForm, LoginForm
+from .forms import UserForm, LoginForm, ChangePassForm
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ValidationError
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -47,7 +47,20 @@ class LogoutView(View):
     
 class ChangePasswordView(View):
     def get(self, request):
-        pass
+        form = ChangePassForm()
+        return render(request, 'change-pass.html', {'form':form})
     
     def post(self, request):
-        pass
+        form = ChangePassForm(request.POST)
+        if form.is_valid():
+            old_password = form.cleaned_data.get('old_password')
+            user = authenticate(username=request.user.username, password=old_password)
+            if not user:
+                raise ValidationError('The old password is incorrect!')
+            
+            
+            user.set_password(form.cleaned_data['new_password'])
+            user.save()
+            return redirect('sign-in')
+        return render(request, 'change-pass.html', {'form':form})
+            

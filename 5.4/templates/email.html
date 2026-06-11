@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactional Login Email Builder</title>
+    <!-- Tailwind CSS (Primary) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Robust Fallback Stylesheet (In case CDN scripts are blocked or unavailable) -->
+    <style>
+        /* Base typography & variables */
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --success: #059669;
+            --danger: #dc2626;
+            --danger-hover: #b91c1c;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #334155;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Fallback Styles for Layout Grid & Elements when Tailwind is blocked */
+        header {
+            background-color: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        /* Basic fallback Grid layout */
+        main {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        @media (min-width: 1024px) {
+            main {
+                grid-template-columns: 350px 1fr;
+            }
+        }
+
+        /* Fallback cards */
+        section {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-sizing: border-box;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        /* Form Controls Fallback Styling */
+        label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.35rem;
+            margin-top: 1rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 0.625rem 0.87rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            box-sizing: border-box;
+            background-color: #ffffff;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
+
+        /* Buttons fallback styling */
+        button {
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .btn-success-toggle {
+            background-color: #f5f3ff;
+            color: #4f46e5;
+            border: 1px solid #c7d2fe;
+        }
+
+        .btn-success-toggle:hover {
+            background-color: #ede9fe;
+        }
+
+        .btn-danger-toggle {
+            background-color: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fee2e2;
+        }
+
+        .btn-danger-toggle:hover {
+            background-color: #fee2e2;
+        }
+
+        .btn-secondary {
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e2e8f0;
+        }
+
+        /* Layout simulator fallback styling */
+        .workspace-bar {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .viewport-container {
+            border: 1px solid #cbd5e1;
+            border-radius: 1.5rem;
+            background-color: #e2e8f0;
+            padding: 1.5rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 580px;
+        }
+
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 py-4 px-6 sticky top-0 z-10 shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 w-full">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 text-white p-2.5 rounded-xl shadow-md shadow-indigo-100">
+                    <i class="fa-solid fa-envelope-shield text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg text-slate-900 leading-tight">SecureMail Engine</h1>
+                    <p class="text-xs text-slate-500">Transactional Login Email Generator & Live Preview</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="toggleTemplate('success')" id="btn-tmpl-success" class="btn btn-success-toggle px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200">
+                    <i class="fa-solid fa-circle-check mr-2"></i>New Login
+                </button>
+                <button onclick="toggleTemplate('security')" id="btn-tmpl-security" class="btn btn-secondary px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200">
+                    <i class="fa-solid fa-triangle-exclamation mr-2"></i>Security Alert
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 w-full">
+        
+        <!-- Left Side: Customization Controls (lg:col-span-4) -->
+        <section class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col gap-6 h-fit">
+            <div class="border-b border-slate-100 pb-4">
+                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2" style="margin: 0;">
+                    <i class="fa-solid fa-sliders text-indigo-600"></i> Customize Variables
+                </h2>
+                <p class="text-xs text-slate-400 mt-1" style="margin: 4px 0 0 0;">Configure parameters to update the live email template.</p>
+            </div>
+
+            <!-- Editor Inputs -->
+            <div class="space-y-4">
+                <!-- Template Preset Status Info -->
+                <div id="status-card" class="bg-indigo-50 border border-indigo-100 rounded-xl p-3 text-xs text-indigo-800">
+                    <p class="font-semibold flex items-center gap-1.5" style="margin: 0;">
+                        <i class="fa-solid fa-info-circle"></i>
+                        <span>Current Preset: Standard Notification</span>
+                    </p>
+                    <p class="text-slate-500 mt-1" style="margin: 4px 0 0 0;">Perfect for informing users about new successful system accesses.</p>
+                </div>
+
+                <!-- Custom Brand Options -->
+                <div>
+                    <label>Company Brand Name</label>
+                    <input type="text" id="val-brand" value="Acme Cloud" oninput="updatePreview()">
+                </div>
+
+                <!-- User Name -->
+                <div>
+                    <label>User Name / Email</label>
+                    <input type="text" id="val-username" value="Alex Johnson (alex@example.com)" oninput="updatePreview()">
+                </div>
+
+                <!-- Location & IP -->
+                <div class="grid grid-cols-2 gap-3" style="display: flex; gap: 12px; margin-top: 10px;">
+                    <div style="flex: 1;">
+                        <label style="margin-top: 0;">IP Address</label>
+                        <input type="text" id="val-ip" value="198.51.100.42" oninput="updatePreview()" class="code-font">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="margin-top: 0;">Location</label>
+                        <input type="text" id="val-location" value="San Francisco, CA, US" oninput="updatePreview()">
+                    </div>
+                </div>
+
+                <!-- Date & Time -->
+                <div>
+                    <label>Date & Time</label>
+                    <input type="text" id="val-time" value="June 11, 2026, 09:09 PM UTC" oninput="updatePreview()">
+                </div>
+
+                <!-- Device / Browser Info -->
+                <div class="grid grid-cols-2 gap-3" style="display: flex; gap: 12px; margin-top: 10px;">
+                    <div style="flex: 1;">
+                        <label style="margin-top: 0;">Device</label>
+                        <input type="text" id="val-device" value="MacBook Pro" oninput="updatePreview()">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="margin-top: 0;">Browser</label>
+                        <input type="text" id="val-browser" value="Chrome (macOS 14.5)" oninput="updatePreview()">
+                    </div>
+                </div>
+
+                <!-- Action Button Label and Link -->
+                <div>
+                    <label>Action Button Text</label>
+                    <input type="text" id="val-btntext" value="Review Security Activity" oninput="updatePreview()">
+                </div>
+
+                <div>
+                    <label>Action URL</label>
+                    <input type="text" id="val-btnurl" value="https://example.com/security/sessions" oninput="updatePreview()" class="code-font" style="font-size: 0.75rem;">
+                </div>
+            </div>
+
+            <!-- Quick Filler Buttons -->
+            <div class="pt-4 border-t border-slate-100" style="border-top: 1px solid #f1f5f9; padding-top: 12px; margin-top: 12px;">
+                <span class="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider" style="display: block; font-size: 0.75rem; color: #94a3b8; font-weight: 700; margin-bottom: 8px;">Quick Fill Locations</span>
+                <div class="flex flex-wrap gap-1.5" style="display: flex; flex-wrap: wrap; gap: 6px;">
+                    <button onclick="fillPreset('London, UK', '82.165.122.90', 'Windows 11', 'Firefox')" class="btn btn-secondary text-xs" style="padding: 4px 8px; font-size: 0.75rem;">
+                        London (PC)
+                    </button>
+                    <button onclick="fillPreset('Tokyo, JP', '210.140.10.155', 'iPhone 15', 'Safari Mobile')" class="btn btn-secondary text-xs" style="padding: 4px 8px; font-size: 0.75rem;">
+                        Tokyo (iPhone)
+                    </button>
+                    <button onclick="fillPreset('Tashkent, UZ', '195.158.3.40', 'Ubuntu Linux', 'Firefox')" class="btn btn-secondary text-xs" style="padding: 4px 8px; font-size: 0.75rem;">
+                        Tashkent (Linux)
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Side: Preview & Code View (lg:col-span-8) -->
+        <section class="lg:col-span-8 flex flex-col gap-4" style="border: none; padding: 0; background: transparent; box-shadow: none;">
+            
+            <!-- Tab Controls & Options bar -->
+            <div class="workspace-bar">
+                
+                <!-- Toggle: Visual Preview vs HTML Code -->
+                <div class="bg-slate-100 p-1 rounded-xl flex gap-1 w-full sm:w-auto" style="display: flex; background: #f1f5f9; padding: 4px; border-radius: 0.5rem; gap: 4px;">
+                    <button onclick="switchView('visual')" id="btn-view-visual" class="btn" style="background: #ffffff; color: var(--text-dark); box-shadow: 0 1px 2px rgba(0,0,0,0.05); padding: 6px 16px;">
+                        <i class="fa-solid fa-eye mr-1.5"></i>Visual Preview
+                    </button>
+                    <button onclick="switchView('code')" id="btn-view-code" class="btn" style="background: transparent; color: var(--text-muted); border: none; padding: 6px 16px;">
+                        <i class="fa-solid fa-code mr-1.5"></i>HTML Code
+                    </button>
+                </div>
+
+                <!-- Preview Options (Only shown in Visual Mode) -->
+                <div id="preview-controls" class="flex items-center gap-3 w-full sm:w-auto justify-end" style="display: flex; align-items: center; gap: 12px;">
+                    <span class="text-xs text-slate-400 font-medium hidden md:inline" style="font-size: 0.75rem; color: #94a3b8; font-weight: 600;">Layout Viewport:</span>
+                    <div class="bg-slate-50 border border-slate-200 p-0.5 rounded-lg flex" style="display: flex; background: #f8fafc; border: 1px solid #e2e8f0; padding: 2px; border-radius: 0.5rem;">
+                        <button onclick="setViewport('desktop')" id="btn-vp-desktop" class="btn" style="background: white; color: var(--primary); padding: 4px 10px; font-size: 0.75rem; border: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05);" title="Desktop View">
+                            <i class="fa-solid fa-desktop mr-1"></i> Desktop
+                        </button>
+                        <button onclick="setViewport('mobile')" id="btn-vp-mobile" class="btn" style="background: transparent; color: var(--text-muted); padding: 4px 10px; font-size: 0.75rem; border: none;" title="Mobile View">
+                            <i class="fa-solid fa-mobile-screen-button mr-1"></i> Mobile
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Code Options (Only shown in Code Mode) -->
+                <div id="code-controls" class="hidden flex items-center gap-2 w-full sm:w-auto justify-end" style="display: none; align-items: center; gap: 8px; width: auto;">
+                    <button onclick="copyToClipboard()" class="btn" style="background-color: var(--success); color: white; padding: 8px 16px; border: none; font-size: 0.75rem;">
+                        <i class="fa-solid fa-copy"></i> Copy HTML
+                    </button>
+                </div>
+            </div>
+
+            <!-- View Area Container -->
+            <div class="viewport-container">
+                
+                <!-- Visual Viewport Simulator Frame -->
+                <div id="visual-container" class="w-full h-full flex justify-center transition-all duration-300" style="width: 100%; display: flex; justify-content: center;">
+                    <div id="viewport-frame" class="w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-300/50 transition-all duration-300 h-[650px] flex flex-col" style="width: 100%; height: 650px; background: white; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #cbd5e1;">
+                        <!-- Simulated browser bar for Desktop & Mock notches for mobile -->
+                        <div id="browser-chrome" class="bg-slate-100 px-4 py-2 flex items-center justify-between border-b border-slate-200 select-none" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 16px; background-color: #f1f5f9; border-bottom: 1px solid #e2e8f0;">
+                            <div class="flex items-center gap-1.5" style="display: flex; gap: 6px;">
+                                <span class="w-2.5 h-2.5 rounded-full bg-rose-400" style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #f87171;"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-400" style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #fbbf24;"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400" style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #34d399;"></span>
+                            </div>
+                            <div id="browser-address" class="bg-white/80 border border-slate-200 text-[10px] text-slate-500 px-12 py-0.5 rounded-md w-3/5 text-center truncate code-font" style="background-color: rgba(255,255,255,0.8); border: 1px solid #e2e8f0; border-radius: 4px; padding: 2px 40px; font-size: 10px; color: #64748b; font-family: monospace;">
+                                email-sandbox-viewer://templates/preview.html
+                            </div>
+                            <div>
+                                <i class="fa-solid fa-arrows-rotate text-xs text-slate-400"></i>
+                            </div>
+                        </div>
+
+                        <!-- Embedded Interactive HTML Sandbox Email Frame -->
+                        <iframe id="preview-iframe" class="w-full flex-1 bg-[#f6f9fc] border-none" style="width: 100%; flex: 1; border: none; background: #f6f9fc;"></iframe>
+                    </div>
+                </div>
+
+                <!-- Raw HTML Code View -->
+                <div id="code-container" class="hidden w-full h-full flex flex-col bg-slate-900 rounded-2xl overflow-hidden border border-slate-950 shadow-2xl h-[650px]" style="display: none; flex-direction: column; width: 100%; height: 650px; background-color: #0f172a; border-radius: 1rem; border: 1px solid #020617; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); overflow: hidden;">
+                    <div class="bg-slate-950 px-4 py-2.5 flex justify-between items-center border-b border-slate-800" style="display: flex; justify-content: space-between; align-items: center; background-color: #020617; padding: 10px 16px; border-bottom: 1px solid #1e293b;">
+                        <div class="flex items-center gap-2" style="display: flex; align-items: center; gap: 8px;">
+                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-500" style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #6366f1;"></span>
+                            <span class="text-xs text-slate-400 font-semibold code-font" style="font-size: 0.75rem; color: #94a3b8; font-family: monospace;">transactional-template.html</span>
+                        </div>
+                        <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded uppercase font-bold tracking-wider" style="font-size: 10px; background-color: #1e293b; color: #94a3b8; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">HTML/CSS</span>
+                    </div>
+                    <textarea id="code-textarea" readonly class="w-full flex-1 p-4 bg-slate-900 text-slate-300 font-mono text-xs focus:outline-none resize-none overflow-y-auto selection:bg-indigo-500 selection:text-white leading-relaxed code-font" style="width: 100%; flex: 1; background-color: #0f172a; color: #cbd5e1; font-family: monospace; font-size: 11px; padding: 16px; border: none; outline: none; box-sizing: border-box; resize: none; overflow-y: auto; line-height: 1.6;"></textarea>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Custom Toast Notification System (No Alert Guardrail) -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-2xl border border-slate-800 flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 z-50 pointer-events-none" style="position: fixed; bottom: 24px; right: 24px; background-color: #0f172a; color: white; padding: 12px 20px; border-radius: 0.75rem; display: flex; align-items: center; gap: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); border: 1px solid #1e293b; transform: translateY(100px); opacity: 0; transition: all 0.3s ease; z-index: 50; pointer-events: none;">
+        <div class="bg-emerald-500 text-white p-1 rounded-full text-xs" style="background-color: #10b981; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px;">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <div>
+            <p class="text-sm font-bold" style="margin: 0; font-size: 0.875rem; font-weight: 700;">Successfully Copied!</p>
+            <p class="text-[11px] text-slate-400" style="margin: 2px 0 0 0; font-size: 11px; color: #94a3b8;">Template markup saved to clipboard.</p>
+        </div>
+    </div>
+
+    <!-- Script Block -->
+    <script>
+        // Global State Variables
+        let currentTemplate = 'success'; // 'success' or 'security'
+        let currentView = 'visual'; // 'visual' or 'code'
+        let currentViewport = 'desktop'; // 'desktop' or 'mobile'
+
+        // Render templates programmatically with variable injections for ultimate flexibility
+        function generateEmailMarkup() {
+            // Retrieve dynamic customization properties
+            const brand = document.getElementById('val-brand').value || 'Acme Cloud';
+            const username = document.getElementById('val-username').value || 'User';
+            const ip = document.getElementById('val-ip').value || '198.51.100.42';
+            const locationStr = document.getElementById('val-location').value || 'Unknown Location';
+            const timeStr = document.getElementById('val-time').value || 'Just now';
+            const device = document.getElementById('val-device').value || 'Device';
+            const browser = document.getElementById('val-browser').value || 'Browser';
+            const btnText = document.getElementById('val-btntext').value || 'Check Activity';
+            const btnUrl = document.getElementById('val-btnurl').value || '#';
+
+            // Distinct components depending on selection
+            const isSecurity = currentTemplate === 'security';
+            const primaryColor = isSecurity ? '#dc2626' : '#4f46e5'; // red-600 vs indigo-600
+            const secondaryColor = isSecurity ? '#fee2e2' : '#e0e7ff'; // red-100 vs indigo-100
+            const shadowAccent = isSecurity ? 'rgba(220, 38, 38, 0.1)' : 'rgba(79, 70, 229, 0.1)';
+
+            const headerIconHtml = isSecurity ? `
+                <table cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto 20px auto;">
+                    <tr>
+                        <td align="center" style="background-color: ${secondaryColor}; border-radius: 50%; padding: 18px; width: 40px; height: 40px;">
+                            <img src="https://img.icons8.com/color/96/000000/shield-error.png" alt="Alert Icon" width="40" height="40" style="display: block; border: 0; outline: none; margin: 0 auto; width: 40px; height: 40px;" />
+                        </td>
+                    </tr>
+                </table>
+            ` : `
+                <table cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto 20px auto;">
+                    <tr>
+                        <td align="center" style="background-color: ${secondaryColor}; border-radius: 50%; padding: 18px; width: 40px; height: 40px;">
+                            <img src="https://img.icons8.com/color/96/000000/approved-key.png" alt="Success Icon" width="40" height="40" style="display: block; border: 0; outline: none; margin: 0 auto; width: 40px; height: 40px;" />
+                        </td>
+                    </tr>
+                </table>
+            `;
+
+            const subjectTitle = isSecurity ? `Suspicious Account Activity Detected` : `Successful Account Access Notification`;
+            
+            const introParagraph = isSecurity ? 
+                `We detected an unusual or unrecognized login attempt with your ${brand} credentials. Out of caution, we recommend verifying this immediately to keep your account safe.` : 
+                `This is a security notification letting you know that a successful connection was established on your ${brand} account using your credentials.`;
+
+            const warningCalloutBox = isSecurity ? `
+                <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #fffbeb; border-left: 4px solid #f59e0b; border-radius: 6px; margin: 24px 0;">
+                    <tr>
+                        <td style="padding: 16px; font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #b45309;">
+                            <strong>Unrecognized device?</strong> If this wasn't you, your account might have been compromised. Click the security action button below instantly to lock down your credentials, close unauthorized sessions, and safe-keep your account.
+                        </td>
+                    </tr>
+                </table>
+            ` : `
+                <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #f8fafc; border-left: 4px solid #64748b; border-radius: 6px; margin: 24px 0;">
+                    <tr>
+                        <td style="padding: 16px; font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #475569;">
+                            <strong>No Action Required</strong>: If this was you, you can safely ignore this automated message. We periodically send notifications when new locations are accessed or cookies expire.
+                        </td>
+                    </tr>
+                </table>
+            `;
+
+            // HTML structural composition designed for cross-client safety (table-driven, inline styles)
+            return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>${subjectTitle}</title>
+    <style type="text/css">
+        /* Client-specific Styles */
+        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        img { -ms-interpolation-mode: bicubic; }
+
+        /* Reset Styles */
+        img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+        table { border-collapse: collapse !important; }
+        body { height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; background-color: #f6f9fc; }
+
+        /* iOS BLUE LINKS */
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: none !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
+
+        /* Responsive Settings */
+        @media screen and (max-width: 600px) {
+            .wrapper { width: 100% !important; min-width: 100% !important; }
+            .content { padding: 24px !important; }
+            .details-box { padding: 16px !important; }
+        }
+    </style>
+</head>
+<body style="background-color: #f6f9fc; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;">
+        <tr>
+            <td align="center" style="background-color: #f6f9fc; padding: 40px 10px 40px 10px;">
+                <!-- Main Container Outer Table -->
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="wrapper" style="max-width: 600px; background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 12px ${shadowAccent}; overflow: hidden; border: 1px solid #e2e8f0;">
+                    
+                    <!-- Top Structural Band/Header Logo Banner -->
+                    <tr>
+                        <td align="center" style="background-color: #ffffff; padding: 32px 40px 10px 40px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td align="center">
+                                        <div style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; margin: 0 0 10px 0;">
+                                            ${brand}
+                                        </div>
+                                        <div style="width: 40px; height: 3px; background-color: ${primaryColor}; border-radius: 2px;"></div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Central Core Body Message Layout -->
+                    <tr>
+                        <td class="content" style="padding: 32px 48px 40px 48px; background-color: #ffffff;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                
+                                <!-- Icon Container Dynamic Markup -->
+                                <tr>
+                                    <td align="center">
+                                        ${headerIconHtml}
+                                    </td>
+                                </tr>
+
+                                <!-- Subject Headline -->
+                                <tr>
+                                    <td align="center" style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 700; color: #0f172a; line-height: 28px; text-align: center; padding-bottom: 12px;">
+                                        ${subjectTitle}
+                                    </td>
+                                </tr>
+
+                                <!-- Greeting Statement -->
+                                <tr>
+                                    <td style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 15px; font-weight: 500; color: #334155; line-height: 24px; padding-bottom: 8px;">
+                                        Hello ${username},
+                                    </td>
+                                </tr>
+
+                                <!-- Primary Narrative Paragraph -->
+                                <tr>
+                                    <td style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 15px; color: #475569; line-height: 24px; padding-bottom: 24px;">
+                                        ${introParagraph}
+                                    </td>
+                                </tr>
+
+                                <!-- Key Value Security Access Variables Data Card -->
+                                <tr>
+                                    <td>
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="details-box" style="background-color: #f8fafc; border-radius: 12px; border: 1px solid #edf2f7; padding: 24px; margin-bottom: 24px;">
+                                            <tr>
+                                                <td colspan="2" style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 700; color: #94a3b8; text-transform: uppercase; tracking-wider: 0.05em; padding-bottom: 16px; border-bottom: 1px solid #e2e8f0;">
+                                                    Connection Parameters
+                                                </td>
+                                            </tr>
+                                            <!-- IP Variable row -->
+                                            <tr>
+                                                <td width="35%" style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; color: #64748b; padding-top: 14px; padding-bottom: 8px;">
+                                                    IP Address
+                                                </td>
+                                                <td width="65%" style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 700; color: #0f172a; padding-top: 14px; padding-bottom: 8px; font-variant-numeric: tabular-nums;">
+                                                    ${ip}
+                                                </td>
+                                            </tr>
+                                            <!-- Location row -->
+                                            <tr>
+                                                <td style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; color: #64748b; padding-top: 8px; padding-bottom: 8px;">
+                                                    Estimated Location
+                                                </td>
+                                                <td style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 700; color: #0f172a; padding-top: 8px; padding-bottom: 8px;">
+                                                    ${locationStr}
+                                                </td>
+                                            </tr>
+                                            <!-- Timestamp row -->
+                                            <tr>
+                                                <td style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; color: #64748b; padding-top: 8px; padding-bottom: 8px;">
+                                                    Date &amp; Time (UTC)
+                                                </td>
+                                                <td style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 700; color: #0f172a; padding-top: 8px; padding-bottom: 8px;">
+                                                    ${timeStr}
+                                                </td>
+                                            </tr>
+                                            <!-- Hardware Device System row -->
+                                            <tr>
+                                                <td style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; color: #64748b; padding-top: 8px; padding-bottom: 8px;">
+                                                    Device Model
+                                                </td>
+                                                <td style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 700; color: #0f172a; padding-top: 8px; padding-bottom: 8px;">
+                                                    ${device}
+                                                </td>
+                                            </tr>
+                                            <!-- Web Browser system row -->
+                                            <tr>
+                                                <td style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; color: #64748b; padding-top: 8px; padding-bottom: 6px;">
+                                                    User Browser
+                                                </td>
+                                                <td style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 700; color: #0f172a; padding-top: 8px; padding-bottom: 6px;">
+                                                    ${browser}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <!-- Warning context layout injection -->
+                                <tr>
+                                    <td>
+                                        ${warningCalloutBox}
+                                    </td>
+                                </tr>
+
+                                <!-- Main Call-to-Action Interactive Button -->
+                                <tr>
+                                    <td align="center" style="padding-top: 10px; padding-bottom: 24px;">
+                                        <table border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+                                            <tr>
+                                                <td align="center" style="background-color: ${primaryColor}; border-radius: 8px;">
+                                                    <a href="${btnUrl}" target="_blank" style="display: inline-block; font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 700; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; border: 1px solid ${primaryColor}; text-align: center; letter-spacing: 0.3px;">
+                                                        ${btnText}
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <!-- Action Link Text Fallback Out -->
+                                <tr>
+                                    <td align="center" style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 12px; color: #94a3b8; line-height: 18px; text-align: center;">
+                                        Button not rendering or responsive? Copy and paste this URL direct into browser address bar:<br />
+                                        <a href="${btnUrl}" target="_blank" style="color: ${primaryColor}; text-decoration: underline; word-break: break-all;">${btnUrl}</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Footer Content Blocks -->
+                    <tr>
+                        <td align="center" style="background-color: #f8fafc; padding: 32px 40px; border-top: 1px solid #edf2f7;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td align="center" style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 13px; color: #64748b; line-height: 20px; text-align: center; padding-bottom: 12px;">
+                                        This email notification is fully automated and was triggered to protect the system security status of your ${brand} credentials.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" style="font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 12px; color: #94a3b8; text-align: center; line-height: 16px;">
+                                        &copy; 2026 ${brand} Security Inc. All Rights Reserved. <br />
+                                        One Hacker Way, Menlo Park, California, US.
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>`;
+        }
+
+        // Apply generated markup directly to the iframe and the source text container
+        function updatePreview() {
+            const markup = generateEmailMarkup();
+            
+            // Set source text
+            document.getElementById('code-textarea').value = markup;
+
+            // Set sandbox iframe body
+            const iframe = document.getElementById('preview-iframe');
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            iframeDoc.open();
+            iframeDoc.write(markup);
+            iframeDoc.close();
+        }
+
+        // Swap out Active Templates
+        function toggleTemplate(type) {
+            currentTemplate = type;
+            
+            const btnSuccess = document.getElementById('btn-tmpl-success');
+            const btnSecurity = document.getElementById('btn-tmpl-security');
+            const statusCard = document.getElementById('status-card');
+
+            if (type === 'success') {
+                btnSuccess.className = "btn btn-success-toggle px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200";
+                btnSecurity.className = "btn btn-secondary px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200";
+                
+                statusCard.className = "bg-indigo-50 border border-indigo-100 rounded-xl p-3 text-xs text-indigo-800";
+                statusCard.innerHTML = `
+                    <p class="font-semibold flex items-center gap-1.5" style="margin: 0;">
+                        <i class="fa-solid fa-info-circle"></i>
+                        <span>Current Preset: Standard Notification</span>
+                    </p>
+                    <p class="text-slate-500 mt-1" style="margin: 4px 0 0 0;">Perfect for informing users about new successful system accesses.</p>
+                `;
+
+                // Set default texts for successful login
+                document.getElementById('val-btntext').value = "Review Security Activity";
+            } else {
+                btnSuccess.className = "btn btn-secondary px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200";
+                btnSecurity.className = "btn btn-danger-toggle px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200";
+                
+                statusCard.className = "bg-rose-50 border border-rose-100 rounded-xl p-3 text-xs text-rose-800";
+                statusCard.innerHTML = `
+                    <p class="font-semibold flex items-center gap-1.5" style="margin: 0;">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>Current Preset: Security Threat Warning</span>
+                    </p>
+                    <p class="text-slate-500 mt-1" style="margin: 4px 0 0 0;">Triggers cautionary actions to users about unrecognized logins.</p>
+                `;
+
+                // Set default warning actions text
+                document.getElementById('val-btntext').value = "No, Secure My Account!";
+            }
+
+            updatePreview();
+        }
+
+        // Switch Tab View (Visual Preview vs Code View)
+        function switchView(view) {
+            currentView = view;
+            const btnVisual = document.getElementById('btn-view-visual');
+            const btnCode = document.getElementById('btn-view-code');
+            const visualContainer = document.getElementById('visual-container');
+            const codeContainer = document.getElementById('code-container');
+            
+            const prevControls = document.getElementById('preview-controls');
+            const codeControls = document.getElementById('code-controls');
+
+            if (view === 'visual') {
+                btnVisual.style.backgroundColor = '#ffffff';
+                btnVisual.style.color = 'var(--text-dark)';
+                btnVisual.style.boxShadow = '0 1px 2px rgba(0,0,0,0.05)';
+                
+                btnCode.style.backgroundColor = 'transparent';
+                btnCode.style.color = 'var(--text-muted)';
+                btnCode.style.boxShadow = 'none';
+
+                visualContainer.style.display = 'flex';
+                codeContainer.style.display = 'none';
+
+                prevControls.style.display = 'flex';
+                codeControls.style.display = 'none';
+            } else {
+                btnVisual.style.backgroundColor = 'transparent';
+                btnVisual.style.color = 'var(--text-muted)';
+                btnVisual.style.boxShadow = 'none';
+                
+                btnCode.style.backgroundColor = '#ffffff';
+                btnCode.style.color = 'var(--text-dark)';
+                btnCode.style.boxShadow = '0 1px 2px rgba(0,0,0,0.05)';
+
+                visualContainer.style.display = 'none';
+                codeContainer.style.display = 'flex';
+
+                prevControls.style.display = 'none';
+                codeControls.style.display = 'flex';
+            }
+        }
+
+        // Toggle Simulator Screen Sizes (Desktop vs Mobile Viewports)
+        function setViewport(size) {
+            currentViewport = size;
+            const btnDesktop = document.getElementById('btn-vp-desktop');
+            const btnMobile = document.getElementById('btn-vp-mobile');
+            const frame = document.getElementById('viewport-frame');
+            const address = document.getElementById('browser-address');
+
+            if (size === 'desktop') {
+                btnDesktop.style.backgroundColor = 'white';
+                btnDesktop.style.color = 'var(--primary)';
+                btnDesktop.style.boxShadow = '0 1px 2px rgba(0,0,0,0.05)';
+
+                btnMobile.style.backgroundColor = 'transparent';
+                btnMobile.style.color = 'var(--text-muted)';
+                btnMobile.style.boxShadow = 'none';
+
+                frame.style.maxWidth = '100%';
+                address.style.display = 'block';
+            } else {
+                btnDesktop.style.backgroundColor = 'transparent';
+                btnDesktop.style.color = 'var(--text-muted)';
+                btnDesktop.style.boxShadow = 'none';
+
+                btnMobile.style.backgroundColor = 'white';
+                btnMobile.style.color = 'var(--primary)';
+                btnMobile.style.boxShadow = '0 1px 2px rgba(0,0,0,0.05)';
+
+                frame.style.maxWidth = '400px';
+                address.style.display = 'none';
+            }
+        }
+
+        // Quick Preset filler values logic
+        function fillPreset(locationStr, ip, device, browser) {
+            document.getElementById('val-location').value = locationStr;
+            document.getElementById('val-ip').value = ip;
+            document.getElementById('val-device').value = device;
+            document.getElementById('val-browser').value = browser;
+            
+            updatePreview();
+        }
+
+        // Robust clipboard action helper utilizing system-safe copy commands
+        function copyToClipboard() {
+            const copyTextarea = document.getElementById('code-textarea');
+            copyTextarea.select();
+            copyTextarea.setSelectionRange(0, 99999); // Safe responsive focus select for mobile devices
+
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showNotificationToast();
+                }
+            } catch (err) {
+                console.error('Fallback clipboard error', err);
+            }
+        }
+
+        // Non-intrusive toast notification trigger
+        function showNotificationToast() {
+            const toast = document.getElementById('toast');
+            // Animate in
+            toast.style.transform = 'translateY(0)';
+            toast.style.opacity = '1';
+
+            // Dismiss after timeout
+            setTimeout(() => {
+                toast.style.transform = 'translateY(100px)';
+                toast.style.opacity = '0';
+            }, 3000);
+        }
+
+        // On window startup hook listeners
+        window.onload = function() {
+            updatePreview();
+        }
+    </script>
+</body>
+</html>

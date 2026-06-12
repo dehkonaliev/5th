@@ -20,6 +20,11 @@ class UserForm(forms.ModelForm):
             raise ValidationError('The passwords are not identical')
         return cleaned_data
     
+class UpdateFrom(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'first_name', 'last_name', 'email', 'phone_number']
+    
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=30)
     password = forms.CharField(widget=forms.PasswordInput)

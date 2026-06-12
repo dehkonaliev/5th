@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from .models import CustomUser
-from .forms import UserForm, LoginForm, ChangePassForm
+from .forms import UserForm, LoginForm, ChangePassForm, UpdateFrom
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ValidationError
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -21,6 +21,21 @@ class SignUpView(View):
 class HomeView(View):
     def get(self, request):
         return render(request, 'index.html')
+    
+class ProfileView(View):
+    def get(self, request):
+        return render(request, 'profile.html', {'user':request.user})
+    
+class ProfileUpdate(View):
+    def get(self, request):
+        form = UpdateFrom(instance=request.user)
+        return render(request, 'update.html', {'form':form})
+    
+    def post(self, request):
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect('profile')
     
 class LoginView(View):
     def get(self, request):

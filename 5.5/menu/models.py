@@ -2,9 +2,9 @@ from django.db import models
 
 class Menu(models.Model):
     CATEGORIES = (
-        ('breakfast':'Breakfast'),
+        ('breakfast','Breakfast'),
         ('lunch', 'Lunch'),
-        ('dinner':'Dinner')
+        ('dinner','Dinner')
     )
     
     name = models.CharField(max_length=70)

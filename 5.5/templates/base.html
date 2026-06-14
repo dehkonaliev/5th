@@ -75,19 +75,10 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href="{% url 'home' %}" class="nav-item nav-link {% if request.path == '/' %}active{% endif %}">Home</a>
+                            <a href="{% url 'home' %}" class="nav-item nav-link {% if '/home' in request.path %}active{% endif %}">Home</a>
                             <a href="{% url 'about' %}" class="nav-item nav-link {% if '/about' in request.path %}active{% endif %}">About</a>
                             <a href="{% url 'menu' %}" class="nav-item nav-link {% if '/menu' in request.path %}active{% endif %}">Menu</a>
                             <a href="{% url 'chefs' %}" class="nav-item nav-link">Chefs</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                                <div class="dropdown-menu rounded-0 m-0">
-                                    <a href="feature.html" class="dropdown-item">Features</a>
-                                    <a href="blog.html" class="dropdown-item">Blog Post</a>
-                                    <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                                    <a href="404.html" class="dropdown-item">404 Error</a>
-                                </div>
-                            </div>
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-none d-lg-flex align-items-center py-2">

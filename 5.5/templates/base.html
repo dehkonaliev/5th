@@ -75,7 +75,7 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href="{% url 'home' %}" class="nav-item nav-link {% if '/home' in request.path %}active{% endif %}">Home</a>
+                            <a href="{% url 'home' %}" class="nav-item nav-link {% if request.path == '/' %}active{% endif %}">Home</a>
                             <a href="{% url 'about' %}" class="nav-item nav-link {% if '/about' in request.path %}active{% endif %}">About</a>
                             <a href="{% url 'menu' %}" class="nav-item nav-link {% if '/menu' in request.path %}active{% endif %}">Menu</a>
                             <a href="{% url 'chefs' %}" class="nav-item nav-link">Chefs</a>

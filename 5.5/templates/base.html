@@ -78,8 +78,8 @@
                             <a href="{% url 'home' %}" class="nav-item nav-link {% if request.path == '/' %}active{% endif %}">Home</a>
                             <a href="{% url 'about' %}" class="nav-item nav-link {% if '/about' in request.path %}active{% endif %}">About</a>
                             <a href="{% url 'menu' %}" class="nav-item nav-link {% if '/menu' in request.path %}active{% endif %}">Menu</a>
-                            <a href="{% url 'chefs' %}" class="nav-item nav-link">Chefs</a>
-                            <a href="contact.html" class="nav-item nav-link">Contact</a>
+                            <a href="{% url 'chefs' %}" class="nav-item nav-link {% if '/chefs' in request.path %}active{% endif %}">Chefs</a>
+                            <a href="{% url 'contact' %}" class="nav-item nav-link {% if '/contact' in request.path %}active{% endif %}">Contact</a>
                         </div>
                         <div class="d-none d-lg-flex align-items-center py-2">
                             <a class="btn btn-outline-secondary btn-square rounded-circle ms-2" href="">

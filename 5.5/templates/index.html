@@ -94,7 +94,7 @@
                     </div>
                     <div class="ps-4">
                         <h5 class="text-white">Years</h5>
-                        <h1 class="display-5 text-secondary mb-0" data-toggle="counter-up">1234</h1>
+                        <h1 class="display-5 text-secondary mb-0" data-toggle="counter-up">{{about.years}}</h1>
                     </div>
                 </div>
             </div>
@@ -106,7 +106,7 @@
                     </div>
                     <div class="ps-4">
                         <h5 class="text-white">Clients</h5>
-                        <h1 class="display-5 text-secondary mb-0" data-toggle="counter-up">1234</h1>
+                        <h1 class="display-5 text-secondary mb-0" data-toggle="counter-up">{{about.clients}}</h1>
                     </div>
                 </div>
             </div>
@@ -118,7 +118,7 @@
                     </div>
                     <div class="ps-4">
                         <h5 class="text-white">Awards</h5>
-                        <h1 class="display-5 text-secondary mb-0" data-toggle="counter-up">1234</h1>
+                        <h1 class="display-5 text-secondary mb-0" data-toggle="counter-up">{{about.awards}}</h1>
                     </div>
                 </div>
             </div>
@@ -130,7 +130,7 @@
                     </div>
                     <div class="ps-4">
                         <h5 class="text-white">Events</h5>
-                        <h1 class="display-5 text-secondary mb-0" data-toggle="counter-up">1234</h1>
+                        <h1 class="display-5 text-secondary mb-0" data-toggle="counter-up">{{about.events}}</h1>
                     </div>
                 </div>
             </div>
@@ -144,7 +144,7 @@
         <div class="row g-5 gb-5">
             <div class="col-lg-4 col-md-6 wow fadeIn" data-wow-delay="0.1s">
                 <div class="feature-item rounded text-center p-5">
-                    <img class="img-fluid bg-white rounded-circle" src="img/feature-1.png" style="width: 150px; height: 150px;">
+                    <img class="img-fluid bg-white rounded-circle" src="{% static 'img/feature-1.png' %}" style="width: 150px; height: 150px;">
                     <h3 class="my-4">Best Chef</h3>
                     <p class="text-light">Sed amet tempor amet sit kasd sea lorem dolor ipsum elitr dolor amet kasd
                         elitr duo vero amet amet stet</p>
@@ -154,17 +154,17 @@
             </div>
             <div class="col-lg-4 col-md-6 wow fadeIn" data-wow-delay="0.3s">
                 <div class="feature-item rounded text-center p-5">
-                    <img class="img-fluid bg-white rounded-circle" src="img/feature-2.png" style="width: 150px; height: 150px;">
+                    <img class="img-fluid bg-white rounded-circle" src="{% static 'img/feature-2.png' %}" style="width: 150px; height: 150px;">
                     <h3 class="my-4">Menu Variations</h3>
                     <p class="text-light">Sed amet tempor amet sit kasd sea lorem dolor ipsum elitr dolor amet kasd
                         elitr duo vero amet amet stet</p>
-                    <a class="font-body" style="letter-spacing: 1px;" href="">Read More <i
+                    <a class="font-body" style="letter-spacing: 1px;" href="{% url 'menu' %}">Read More <i
                             class="bi bi-arrow-right"></i></a>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 wow fadeIn" data-wow-delay="0.5s">
                 <div class="feature-item rounded text-center p-5">
-                    <img class="img-fluid bg-white rounded-circle" src="img/feature-3.png" style="width: 150px; height: 150px;">
+                    <img class="img-fluid bg-white rounded-circle" src="{% static 'img/feature-3.png' %}" style="width: 150px; height: 150px;">
                     <h3 class="my-4">Healthy Food</h3>
                     <p class="text-light">Sed amet tempor amet sit kasd sea lorem dolor ipsum elitr dolor amet kasd
                         elitr duo vero amet amet stet</p>
@@ -250,7 +250,7 @@
         <div class="row g-0">
             <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s" style="min-height: 500px;">
                 <div class="h-100 position-relative overflow-hidden" style="border-top-left-radius: 50%;">
-                    <img class="position-absolute w-100 h-100" src="img/testimonial.jpg" style="object-fit: cover;">
+                    <img class="position-absolute w-100 h-100" src="{% static 'img/testimonial.jpg' %}" style="object-fit: cover;">
                 </div>
             </div>
             <div class="col-lg-6 bg-dark p-5 overflow-hidden wow fadeIn" data-wow-delay="0.3s" style="border-bottom-right-radius: 50%;">
@@ -265,7 +265,7 @@
                             et stet lorem kasd labore dolore lorem ipsum. At lorem lorem magna ut et, nonumy et labore
                             et tempor diam tempor erat dolor rebum sit ipsum.</p>
                         <div class="d-flex align-items-center">
-                            <img class="img-fluid rounded-circle" src="img/testimonial-1.jpg" alt="">
+                            <img class="img-fluid rounded-circle" src="{% static 'img/testimonial-1.jpg' %}" alt="">
                             <div class="ps-4">
                                 <h5 class="text-secondary">Client Name</h5>
                                 <span class="small text-uppercase text-secondary"

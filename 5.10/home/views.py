@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views import View
 from rest_framework.response import Response
 from .models import Post
@@ -34,4 +34,22 @@ class CreateList(APIView):
             'status': status.HTTP_201_CREATED,
             'data': serializer.data
         })
+        
+
+class DetailUpdateDelete(APIView):
+    def get(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        if not post:
+            raise ValidationError({
+                'msg': "Post not found!",
+                'status': status.HTTP_204_NO_CONTENT
+            })
+        serializer = PostSerializer(post)
+        
+        return Response({
+            'msg': "Post Detail",
+            'status': status.HTTP_200_OK,
+            'data': serializer.data
+        })
+        
         

@@ -52,4 +52,30 @@ class DetailUpdateDelete(APIView):
             'data': serializer.data
         })
         
+    def patch(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        if not post:
+            raise ValidationError({
+                'msg': "Post not found!",
+                'status': status.HTTP_204_NO_CONTENT
+            })
+        serializer = PostSerializer(post)
         
+        return Response({
+            'msg': "Updated!",
+            'status': status.HTTP_200_OK,
+            'data':serializer.data
+        })
+        
+    def delete(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        if not post:
+            raise ValidationError({
+                'msg': "Post not found!",
+                'status': status.HTTP_204_NO_CONTENT
+            })
+            
+        return Response({
+            'msg': "Deleted!",
+            'status': status.HTTP_200_OK
+        })
